@@ -35,20 +35,72 @@ public:
 	{
 		free (_p);
 	}
+
+	T operator + (T _a)
+	{
+		return t + _a;
+	}
+
+	T operator - (T _a)
+	{
+		return t - _a;
+	}
+
+	T operator * (T _a)
+	{
+		return t * _a;
+	}
+
+	T operator / (T _a)
+	{
+		return t * _a;
+	}
+
+	T operator & (T _a)
+	{
+		return t & _a;
+	}
+
+	T operator | (T _a)
+	{
+		return t | _a;
+	}
+
+	T operator ^ (T _a)
+	{
+		return t ^ _a;
+	}
+
+	bool operator && (T _a)
+	{
+		return t && _a;
+	}
+
+	bool operator || (T _a)
+	{
+		return t || _a;
+	}
 };
 
 typedef _T <float> FLOAT;
+#define _T smart_type;
 
 
 int main ()
 {
-	FLOAT *f = new FLOAT;
+	{
+		FLOAT *f = new FLOAT;
+		*f = 10.0f;
+		printf ("%f\n", (float) *f);
+		delete f;
+	}
 
-	*f = 10.0f;
+	{
+		FLOAT f = 1.0f;
+		f = 1.0f * f + 9.0f;
+		printf ("%f\n", (float) f);
+	}
 
-	printf ("%f\n", (float) *f);
-
-	delete f;
 
 	return 0;
 }
