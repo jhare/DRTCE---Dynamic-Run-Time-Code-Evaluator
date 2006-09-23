@@ -10,6 +10,8 @@ class _T
 	
 public:
 
+//constructors
+	
 	_T ()
 	{
 	}
@@ -18,85 +20,235 @@ public:
 	{
 		t = _t;
 	}
+
+//destructor
+
+	~_T ()
+	{
+	}
+
+
+//conversion operators
 		
-	operator T (void)
+	virtual operator T (void)
 	{
 		return t;
 	}
 
+
+//memory allocation operators
+
 	void *operator new (size_t _n)
 	{
-		T *p = (T *) malloc (sizeof (T) * _n);
-
-		return p;
+		return new T [_n];
 	}
 
 	void operator delete (void *_p)
 	{
-		free (_p);
+		delete (T *) _p;
 	}
 
-	T operator + (T _a)
+	void operator delete [] (void *_p)
+	{
+		delete [] (T *) _p;
+	}
+
+
+//additive operators
+
+	virtual T operator + (T _a)
 	{
 		return t + _a;
 	}
 
-	T operator - (T _a)
+	virtual T operator - (T _a)
 	{
 		return t - _a;
 	}
 
-	T operator * (T _a)
+
+//multiplicative operators
+
+	virtual T operator * (T _a)
 	{
 		return t * _a;
 	}
 
-	T operator / (T _a)
+	virtual T operator / (T _a)
 	{
 		return t * _a;
 	}
 
-	T operator & (T _a)
+	virtual int operator % (int _i)
 	{
-		return t & _a;
+		return static_cast <int> (t) % _i;
 	}
 
-	T operator | (T _a)
+
+//bitwise operators
+
+	virtual T operator & (int _i)
 	{
-		return t | _a;
+		return static_cast <int> (t) & _i;
 	}
 
-	T operator ^ (T _a)
+	virtual T operator | (int _i)
 	{
-		return t ^ _a;
+		return static_cast <int> (t) | _i;
 	}
 
-	bool operator && (T _a)
+	virtual T operator ^ (int _i)
+	{
+		return static_cast <int> (t) ^ _i;
+	}
+
+	virtual bool operator ~ ()
+	{
+		return ~static_cast <int> (t);
+	}
+
+
+//logic operators
+
+	virtual bool operator && (T _a)
 	{
 		return t && _a;
 	}
 
-	bool operator || (T _a)
+	virtual bool operator || (T _a)
 	{
 		return t || _a;
 	}
-};
 
-typedef _T <float> FLOAT;
-#define _T smart_type;
+	virtual bool operator ! ()
+	{
+		return !t;
+	}
+
+
+//comparative operators
+
+	virtual bool operator == (T _a)
+	{
+		return t == _a;
+	}
+
+	virtual bool operator != (T _a)
+	{
+		return t != _a;
+	}
+
+	virtual bool operator > (T _a)
+	{
+		return t > _a;
+	}
+
+	virtual bool operator < (T _a)
+	{
+		return t < _a;
+	}
+
+	virtual bool operator >= (T _a)
+	{
+		return t >= _a;
+	}
+
+	
+	virtual bool operator <= (T _a)
+	{
+		return t <= _a;
+	}
+
+
+//referential operators
+
+	virtual T *operator & ()
+	{
+		return &t;
+	}
+
+	virtual T *operator -> ()
+	{
+		return &t;
+	}
+
+	_T <T> operator * (_T <T> _p);
+
+	
+
+//unary operators
+
+	virtual T operator - ()
+	{
+		return -t;
+	}
+
+	virtual T operator + ()
+	{
+		return +t;
+	}
+
+
+//prefix operators
+
+	virtual T operator ++ ()
+	{
+
+		return ++t;
+	}
+
+	virtual T operator -- ()
+	{
+		return --t;
+	}
+
+
+//postfix operators
+
+	virtual T operator ++ (int)
+	{
+		return t++;
+	}
+
+	virtual T operator -- (int)
+	{
+		return t--;
+	}
+
+};
 
 
 int main ()
 {
+	typedef _T <int> _int;
+	typedef _T <unsigned int> _unsigned_int;
+	typedef _T <long> _long;
+	typedef _T <unsigned long> _unsigned_long;
+	typedef _T <float> _float;
+	typedef _T <double> _double;
+	typedef _T <char> _char;
+	typedef _T <unsigned char> _unsigned_char;
+	typedef _T <void> _void;
+
+	{_int a;}
+	{_unsigned_int a;}
+	{_float a;}
+	{_double a;}
+	{_long a;}
+	{_unsigned_long a;}
+	{_char a;}
+	{_unsigned_char a;}
+
+
 	{
-		FLOAT *f = new FLOAT;
+		_float *f = new _float;
 		*f = 10.0f;
 		printf ("%f\n", (float) *f);
 		delete f;
 	}
 
 	{
-		FLOAT f = 1.0f;
+		_float f = 1.0f;
 		f = 1.0f * f + 9.0f;
 		printf ("%f\n", (float) f);
 	}
