@@ -1,0 +1,21 @@
+Begin3
+Title:		smart_type
+Version:	@VERSION@
+Entered-date:	@ISODATE@
+Description:	This is the smart type that replaces the standard C++ intrinsic types
+		@configure_input@
+		Please edit smart_type.lsm.in to fix the Keywords and
+		Primary-site entries, add several more lines of
+		description here if appropriate, and to delete these
+		instructions.
+Keywords:	[substitute your keywords here]
+Author: 	rtdmr6@localhost.localdomain (Ryanne Dolan)
+Maintained-by:	rtdmr6@localhost.localdomain (Ryanne Dolan)
+Primary-site:	metlab.unc.edu pub/Linux/apps/some/directory
+		31k smart_type-@VERSION@.tar.gz
+		500  smart_type.lsm
+Alternate-site: 
+Original-site:  
+Platforms:      
+Copying-policy:	GNU copyleft
+End
