@@ -1,0 +1,21 @@
+Begin3
+Title:		symbol_table
+Version:	@VERSION@
+Entered-date:	@ISODATE@
+Description:	The symbol table is an operation counter for the drtce.
+		@configure_input@
+		Please edit symbol_table.lsm.in to fix the Keywords and
+		Primary-site entries, add several more lines of
+		description here if appropriate, and to delete these
+		instructions.
+Keywords:	[substitute your keywords here]
+Author: 	jfh9p8@localhost.localdomain (Joseph Hare)
+Maintained-by:	jfh9p8@localhost.localdomain (Joseph Hare)
+Primary-site:	metlab.unc.edu pub/Linux/apps/some/directory
+		31k symbol_table-@VERSION@.tar.gz
+		500  symbol_table.lsm
+Alternate-site: 
+Original-site:  
+Platforms:      
+Copying-policy:	GNU copyleft
+End
