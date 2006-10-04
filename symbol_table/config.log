@@ -835,6 +835,7 @@ config.status:751: WARNING:  Makefile.in seems to ignore the --datarootdir setti
 config.status:616: creating symbol_table.lsm
 config.status:616: creating symbol_table.spec
 config.status:616: creating config.h
+config.status:855: config.h is unchanged
 config.status:868: executing default-1 commands
 
 ## ---------------- ##
