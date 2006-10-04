@@ -1,0 +1,21 @@
+Begin3
+Title:		context_tree
+Version:	0.1.0
+Entered-date:	2006-10-04
+Description:	Context tree manages the function and loop execution states
+		context_tree.lsm.  Generated from context_tree.lsm.in by configure.
+		Please edit context_tree.lsm.in to fix the Keywords and
+		Primary-site entries, add several more lines of
+		description here if appropriate, and to delete these
+		instructions.
+Keywords:	[substitute your keywords here]
+Author: 	jfh9p8@r27rtdmr6.desktop.umr.edu (Joseph Hare)
+Maintained-by:	jfh9p8@r27rtdmr6.desktop.umr.edu (Joseph Hare)
+Primary-site:	metlab.unc.edu pub/Linux/apps/some/directory
+		31k context_tree-0.1.0.tar.gz
+		500  context_tree.lsm
+Alternate-site: 
+Original-site:  
+Platforms:      
+Copying-policy:	GNU copyleft
+End
