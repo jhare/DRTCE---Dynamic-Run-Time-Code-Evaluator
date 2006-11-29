@@ -2,18 +2,18 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <iostream>
 #include <set>
 
 template <typename T>
 class _T
 {
-	T t;
 
+public:
 	const char *Name;
 	std::set <const char *> Depends;
 	
-public:
+	T t;
 
 //constructors
 
@@ -37,6 +37,7 @@ public:
 
 	void print_depends ()
 	{
+		std::cout << Name << " depends on: ";
 		for (std::set <const char *>::iterator pos = Depends.begin (); pos != Depends.end (); ++pos)
 		{
 			std::cout << *pos;
@@ -60,6 +61,18 @@ public:
 		return t;
 	}
 
+//assignment operator
+	virtual T operator = (T _t)
+	{
+		t = _t;
+	}
+
+
+	virtual T operator = (_T <T> _t)
+	{
+		depends (_t.Name);
+		t = _t.t;
+	}
 
 //memory allocation operators
 
@@ -264,17 +277,12 @@ int main ()
 	{_char a;}
 	{_unsigned_char a;}
 
-
 	{
-		_float *f = new _float;
-		*f = 10.0f;
-		printf ("%f\n", (float) *f);
-		delete f;
-	}
+		_float f (1.0f, "f");
+		_float g (2.0f, "g");
 
-	{
-		_float f = 1.0f;
-		f = 1.0f * f + 9.0f;
+		f = g;
+
 		printf ("%f\n", (float) f);
 	}
 
