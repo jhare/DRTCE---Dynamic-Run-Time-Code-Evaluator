@@ -17,7 +17,7 @@ public:
 
 //constructors
 
-	_T () : Name ("intermediate")
+	_T () : Name ("intermediate compiler variable")
 	{
 	}
 
@@ -30,17 +30,18 @@ public:
 		t = _t;
 	}
 
-	void depends (const char *_varname)
+	void _ (const char *_varname)
 	{
 		Depends.insert (_varname);
 	}
 
 	void print_depends ()
 	{
-		std::cout << Name << " depends on: ";
+		std::cout << Name << " at address 0x" << std::hex << (int) this << " depends on: ";
+
 		for (std::set <const char *>::iterator pos = Depends.begin (); pos != Depends.end (); ++pos)
 		{
-			std::cout << *pos;
+			std::cout << *pos << "; ";
 		}
 
 		std::cout << std::endl;
@@ -61,7 +62,7 @@ public:
 		return t;
 	}
 
-//assignment operator
+//assignment operators
 	virtual T operator = (T _t)
 	{
 		t = _t;
@@ -70,9 +71,131 @@ public:
 
 	virtual T operator = (_T <T> _t)
 	{
-		depends (_t.Name);
+		_ (_t.Name);
 		t = _t.t;
 	}
+
+	virtual T operator += (T _t)
+	{
+		t += _t;
+	}
+
+
+	virtual T operator += (_T <T> _t)
+	{
+		Depends.insert (_t.Depends.begin (), _t.Depends.end ());
+		_ (_t.Name);
+		t += _t.t;
+	}
+
+	virtual T operator -= (T _t)
+	{
+		t -= _t;
+	}
+
+
+	virtual T operator -= (_T <T> _t)
+	{
+		_ (_t.Name);
+		t -= _t.t;
+	}
+
+	virtual T operator *= (T _t)
+	{
+		t *= _t;
+	}
+
+
+	virtual T operator *= (_T <T> _t)
+	{
+		_ (_t.Name);
+		t *= _t.t;
+	}
+
+	virtual T operator /= (int _t)
+	{
+		t /= _t;
+	}
+
+
+	virtual T operator /= (_T <T> _t)
+	{
+		_ (_t.Name);
+		t /= _t.t;
+	}
+
+	virtual T operator &= (int _t)
+	{
+		t = (int) t & _t;
+	}
+
+
+	virtual T operator &= (_T <int> _t)
+	{
+		_ (_t.Name);
+		t = (int) t & _t.t;
+	}
+
+	virtual T operator |= (int _t)
+	{
+		t = (int ) t | _t;
+	}
+
+
+	virtual T operator |= (_T <int> _t)
+	{
+		_ (_t.Name);
+		t = (int) t | _t.t;
+	}
+
+	virtual T operator ^= (int _t)
+	{
+		t = (int) t ^ _t;
+	}
+
+
+	virtual T operator ^= (_T <int> _t)
+	{
+		_ (_t.Name);
+		t = (int) t ^ _t.t;
+	}
+
+	virtual T operator <<= (int _t)
+	{
+		t = (int) t << _t;
+	}
+
+
+	virtual T operator <<= (_T <int> _t)
+	{
+		_ (_t.Name);
+		t = (int) t << _t.t;
+	}
+
+	virtual T operator >>= (int _t)
+	{
+		t = (int) t >> _t;
+	}
+
+
+	virtual T operator >>= (_T <int> _t)
+	{
+		_ (_t.Name);
+		t = (int) t >> _t.t;
+	}
+
+	virtual T operator %= (int _t)
+	{
+		t = (int) t >> _t;
+	}
+
+
+	virtual T operator %= (_T <int> _t)
+	{
+		_ (_t.Name);
+		t = (int) t % _t.t;
+	}
+
 
 //memory allocation operators
 
@@ -94,9 +217,16 @@ public:
 
 //additive operators
 
-	virtual T operator + (T _a)
+	virtual _T <T> operator + (_T <T> _a)
 	{
-		return t + _a;
+		_T <T> t_;
+		t_.t = t + _a.t;
+		Depends.insert (_a.Depends.begin (), _a.Depends.end ());
+		Depends.insert (_a.Name);
+		t_.Depends = Depends;
+		t_.Depends.insert (Name);
+
+		return t_;
 	}
 
 	virtual T operator - (T _a)
@@ -280,8 +410,9 @@ int main ()
 	{
 		_float f (1.0f, "f");
 		_float g (2.0f, "g");
+		_float a (3.0f, "a");
 
-		f = g;
+		f += g + a;
 
 		printf ("%f\n", (float) f);
 	}

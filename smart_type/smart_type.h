@@ -1,23 +1,26 @@
 
 
+#ifndef SMART_TYPE_H
+#define SMART_TYPE_H
+
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <iostream>
 #include <set>
 
 template <typename T>
 class _T
 {
-	T t;
 
+public:
 	const char *Name;
 	std::set <const char *> Depends;
 	
-public:
+	T t;
 
 //constructors
 
-	_T () : Name ("intermediate")
+	_T () : Name ("intermediate compiler variable")
 	{
 	}
 
@@ -30,16 +33,18 @@ public:
 		t = _t;
 	}
 
-	void depends (const char *_varname)
+	void _ (const char *_varname)
 	{
 		Depends.insert (_varname);
 	}
 
 	void print_depends ()
 	{
+		std::cout << Name << " at address 0x" << std::hex << (int) this << " depends on: ";
+
 		for (std::set <const char *>::iterator pos = Depends.begin (); pos != Depends.end (); ++pos)
 		{
-			std::cout << *pos;
+			std::cout << *pos << "; ";
 		}
 
 		std::cout << std::endl;
@@ -58,6 +63,140 @@ public:
 	virtual operator T (void)
 	{
 		return t;
+	}
+
+//assignment operators
+	virtual T operator = (T _t)
+	{
+		t = _t;
+	}
+
+
+	virtual T operator = (_T <T> _t)
+	{
+		_ (_t.Name);
+		t = _t.t;
+	}
+
+	virtual T operator += (T _t)
+	{
+		t += _t;
+	}
+
+
+	virtual T operator += (_T <T> _t)
+	{
+		Depends.insert (_t.Depends.begin (), _t.Depends.end ());
+		_ (_t.Name);
+		t += _t.t;
+	}
+
+	virtual T operator -= (T _t)
+	{
+		t -= _t;
+	}
+
+
+	virtual T operator -= (_T <T> _t)
+	{
+		_ (_t.Name);
+		t -= _t.t;
+	}
+
+	virtual T operator *= (T _t)
+	{
+		t *= _t;
+	}
+
+
+	virtual T operator *= (_T <T> _t)
+	{
+		_ (_t.Name);
+		t *= _t.t;
+	}
+
+	virtual T operator /= (int _t)
+	{
+		t /= _t;
+	}
+
+
+	virtual T operator /= (_T <T> _t)
+	{
+		_ (_t.Name);
+		t /= _t.t;
+	}
+
+	virtual T operator &= (int _t)
+	{
+		t = (int) t & _t;
+	}
+
+
+	virtual T operator &= (_T <int> _t)
+	{
+		_ (_t.Name);
+		t = (int) t & _t.t;
+	}
+
+	virtual T operator |= (int _t)
+	{
+		t = (int ) t | _t;
+	}
+
+
+	virtual T operator |= (_T <int> _t)
+	{
+		_ (_t.Name);
+		t = (int) t | _t.t;
+	}
+
+	virtual T operator ^= (int _t)
+	{
+		t = (int) t ^ _t;
+	}
+
+
+	virtual T operator ^= (_T <int> _t)
+	{
+		_ (_t.Name);
+		t = (int) t ^ _t.t;
+	}
+
+	virtual T operator <<= (int _t)
+	{
+		t = (int) t << _t;
+	}
+
+
+	virtual T operator <<= (_T <int> _t)
+	{
+		_ (_t.Name);
+		t = (int) t << _t.t;
+	}
+
+	virtual T operator >>= (int _t)
+	{
+		t = (int) t >> _t;
+	}
+
+
+	virtual T operator >>= (_T <int> _t)
+	{
+		_ (_t.Name);
+		t = (int) t >> _t.t;
+	}
+
+	virtual T operator %= (int _t)
+	{
+		t = (int) t >> _t;
+	}
+
+
+	virtual T operator %= (_T <int> _t)
+	{
+		_ (_t.Name);
+		t = (int) t % _t.t;
 	}
 
 
@@ -81,9 +220,16 @@ public:
 
 //additive operators
 
-	virtual T operator + (T _a)
+	virtual _T <T> operator + (_T <T> _a)
 	{
-		return t + _a;
+		_T <T> t_;
+		t_.t = t + _a.t;
+		Depends.insert (_a.Depends.begin (), _a.Depends.end ());
+		Depends.insert (_a.Name);
+		t_.Depends = Depends;
+		t_.Depends.insert (Name);
+
+		return t_;
 	}
 
 	virtual T operator - (T _a)
@@ -242,19 +388,20 @@ public:
 
 };
 
+typedef _T <int> _int;
+typedef _T <unsigned int> _unsigned_int;
+typedef _T <long> _long;
+typedef _T <unsigned long> _unsigned_long;
+typedef _T <float> _float;
+typedef _T <double> _double;
+typedef _T <char> _char;
+typedef _T <unsigned char> _unsigned_char;
+typedef _T <void> _void;
 
+
+/*
 int main ()
 {
-	typedef _T <int> _int;
-	typedef _T <unsigned int> _unsigned_int;
-	typedef _T <long> _long;
-	typedef _T <unsigned long> _unsigned_long;
-	typedef _T <float> _float;
-	typedef _T <double> _double;
-	typedef _T <char> _char;
-	typedef _T <unsigned char> _unsigned_char;
-	typedef _T <void> _void;
-
 	{_int a;}
 	{_unsigned_int a;}
 	{_float a;}
@@ -264,20 +411,20 @@ int main ()
 	{_char a;}
 	{_unsigned_char a;}
 
-
 	{
-		_float *f = new _float;
-		*f = 10.0f;
-		printf ("%f\n", (float) *f);
-		delete f;
-	}
+		_float f (1.0f, "f");
+		_float g (2.0f, "g");
+		_float a (3.0f, "a");
 
-	{
-		_float f = 1.0f;
-		f = 1.0f * f + 9.0f;
+		f += g + a;
+
 		printf ("%f\n", (float) f);
 	}
 
 
 	return 0;
 }
+
+*/
+
+#endif
